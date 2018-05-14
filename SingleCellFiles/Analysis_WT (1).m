@@ -92,19 +92,8 @@ for k=start_pos:numpos
     
     if strcmp(name, 'WT')==1
     name2=['pos',num2str(i)];
-%     name3=['FFT' name2];
-%     xa=xlsread('summary2 of Period analysis.xls', name3);
-    % Note: xa is the excelt sheet of the FFT periods from Pete
-    % third column are  FFT periods, fifth column are RAEs (called GOFs in the sheet)
-    %pos{i}.periods(:,1)=nan;
-%     pos{i}.periods(:,2)=nan;
-%     xa(isnan(xa(:,1)),:)=[];
-%       
-%     pos{i}.periods(xa(:,1),1)=xa(:,3); %FFT period
-%     pos{i}.periods(xa(:,1),2)=xa(:,5);
-    
-     
-    clear xa
+   
+
      posfile=dir([pwd , '/Data_singlecell/' name '_final_coordinates/',[name2 '*tracked*.csv']]);
      fid= fopen( posfile.name,'r');
     C=textscan(fid, repmat('%s',1,10), 'delimiter',',', 'CollectOutput',true);
@@ -184,7 +173,7 @@ for k=start_pos:numpos
 if strcmp(name, 'WT')==1
 [Times,txt2]=xlsread(['timestamp_WT.xlsx'], 'C8:DR15');
 pos{i}.time= Times(i,:);
-elseif strcmp(name, 'Exp21')==1
+elseif strcmp(name, 'WTrepeat')==1
     
 [Times,txt2]=xlsread(['timestamp_WTrepeat.xlsx'], 'B8:AG27');
 pos{i}.time= Times(i,2:end);
@@ -252,7 +241,6 @@ nums=unique(sort(C(:,1)))-min(unique(sort(C(:,1))))+1;% first pixel must value 1
 pixs=(nums(end)-nums(3));
 
 
-
 [ind1,ind2]=find(imregionalmax(Ba)>0);
 plot(ind2, ind1, 'o')
 set(gca,'YDir','Reverse')
@@ -313,7 +301,7 @@ for k= start_pos:numpos
 end
 
 
-% % periods on the figure
+% periods on the figure
 for k=start_pos:numpos
     i=posi(k);
     keep=[];
@@ -430,10 +418,8 @@ for k= 1:  numpos
     pergofsSR=[pergofsSR; pos{i}.periodsgofs(keep,3)];
     perignoreSR=[perignoreSR; pos{i}.periodsignore(keep,3)];
     count(k)=size(pos{i}.YFP,2);
-     countkeep(k)=size(pos{i}.YFP(:,keep),2);
-    
-    
-      elseif k==5 
+    countkeep(k)=size(pos{i}.YFP(:,keep),2);  
+    elseif k==5 
     [ik,ja]=find(pos{i}.ymod <max(max(pos{4}.ymod)) & pos{i}.xmod<max(max(pos{4}.xmod)));  
     dontkeep=unique(ja); 
     keep=(1:size(pos{5}.xmod,2));
